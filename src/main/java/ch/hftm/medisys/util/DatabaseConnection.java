@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Singleton-Klasse für Datenbankverbindung gemäß GR07 (Referentielle Integrität)
+ * Singleton-Klasse für Datenbankverbindung gemäss GR07 (Referentielle Integrität)
  */
 public class DatabaseConnection {
     

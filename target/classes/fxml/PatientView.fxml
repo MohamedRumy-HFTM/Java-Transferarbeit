@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx/21" 
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ch.hftm.medisys.controller.PatientController"
+            prefHeight="800.0" prefWidth="1200.0"
+            stylesheets="@../css/styles.css">
+    
+    <!-- TOP: Titel und Suchleiste -->
+    <top>
+        <VBox spacing="10" styleClass="header-section">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+            
+            <!-- Titel -->
+            <HBox alignment="CENTER_LEFT">
+                <Label text="MediSys - Patientenverwaltung" styleClass="title-label">
+                    <font>
+                        <Font name="System Bold" size="24.0"/>
+                    </font>
+                </Label>
+            </HBox>
+            
+            <!-- Suchleiste -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Suche:" styleClass="label-bold"/>
+                <TextField fx:id="txtSuche" promptText="Name, Versicherungsnummer oder E-Mail eingeben..." 
+                          prefWidth="400.0" HBox.hgrow="ALWAYS"/>
+                <Button fx:id="btnSuchen" text="Suchen" onAction="#handleSuchenClick" 
+                       styleClass="button-primary"/>
+                <Button text="Alle anzeigen" onAction="#handleSuchenClick" 
+                       styleClass="button-secondary"/>
+            </HBox>
+        </VBox>
+    </top>
+    
+    <!-- CENTER: Hauptbereich mit Tabelle und Formular -->
+    <center>
+        <SplitPane dividerPositions="0.5" styleClass="split-pane">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            
+            <!-- LINKE SEITE: Patiententabelle -->
+            <VBox spacing="10" styleClass="table-section">
+                <Label text="Patientenliste" styleClass="section-label">
+                    <font>
+                        <Font name="System Bold" size="16.0"/>
+                    </font>
+                </Label>
+                
+                <TableView fx:id="patientTable" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colPatientID" text="ID" prefWidth="50.0" 
+                                   minWidth="50.0" maxWidth="80.0"/>
+                        <TableColumn fx:id="colVorname" text="Vorname" prefWidth="100.0"/>
+                        <TableColumn fx:id="colNachname" text="Nachname" prefWidth="100.0"/>
+                        <TableColumn fx:id="colGeburtsdatum" text="Geburtsdatum" prefWidth="100.0"/>
+                        <TableColumn fx:id="colGeschlecht" text="Geschlecht" prefWidth="70.0" 
+                                   minWidth="70.0" maxWidth="70.0"/>
+                        <TableColumn fx:id="colTelefon" text="Telefon" prefWidth="120.0"/>
+                        <TableColumn fx:id="colEmail" text="E-Mail" prefWidth="150.0"/>
+                        <TableColumn fx:id="colKrankenkasse" text="Krankenkasse" prefWidth="120.0"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+            </VBox>
+            
+            <!-- RECHTE SEITE: Patientenformular -->
+            <VBox spacing="15" styleClass="form-section">
+                <Label text="Patientendaten" styleClass="section-label">
+                    <font>
+                        <Font name="System Bold" size="16.0"/>
+                    </font>
+                </Label>
+                
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+                    <VBox spacing="10">
+                        <padding>
+                            <Insets top="10" right="10" bottom="10" left="10"/>
+                        </padding>
+                        
+                        <!-- Persönliche Daten -->
+                        <Label text="Persönliche Daten" styleClass="subsection-label">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                        </Label>
+                        
+                        <Separator/>
+                        
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="NEVER" minWidth="120.0" prefWidth="120.0"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            
+                            <!-- Vorname -->
+                            <Label text="Vorname: *" GridPane.columnIndex="0" GridPane.rowIndex="0" 
+                                  styleClass="label-required"/>
+                            <TextField fx:id="txtVorname" promptText="Vorname" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            
+                            <!-- Nachname -->
+                            <Label text="Nachname: *" GridPane.columnIndex="0" GridPane.rowIndex="1" 
+                                  styleClass="label-required"/>
+                            <TextField fx:id="txtNachname" promptText="Nachname" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                            
+                            <!-- Geburtsdatum -->
+                            <Label text="Geburtsdatum: *" GridPane.columnIndex="0" GridPane.rowIndex="2" 
+                                  styleClass="label-required"/>
+                            <DatePicker fx:id="dpGeburtsdatum" promptText="TT.MM.JJJJ" 
+                                       GridPane.columnIndex="1" GridPane.rowIndex="2" 
+                                       prefWidth="200.0"/>
+                            
+                            <!-- Geschlecht -->
+                            <Label text="Geschlecht: *" GridPane.columnIndex="0" GridPane.rowIndex="3" 
+                                  styleClass="label-required"/>
+                            <ComboBox fx:id="cmbGeschlecht" promptText="Bitte wählen..." 
+                                     GridPane.columnIndex="1" GridPane.rowIndex="3" 
+                                     prefWidth="200.0"/>
+                        </GridPane>
+                        
+                        <!-- Kontaktdaten -->
+                        <Label text="Kontaktdaten" styleClass="subsection-label">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets top="15"/>
+                            </VBox.margin>
+                        </Label>
+                        
+                        <Separator/>
+                        
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="NEVER" minWidth="120.0" prefWidth="120.0"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            
+                            <!-- Strasse -->
+                            <Label text="Strasse:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <TextField fx:id="txtStrasse" promptText="Strassenname und Hausnummer" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            
+                            <!-- PLZ -->
+                            <Label text="PLZ:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <TextField fx:id="txtPLZ" promptText="Postleitzahl" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="1" 
+                                      prefWidth="150.0"/>
+                            
+                            <!-- Ort -->
+                            <Label text="Ort:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                            <TextField fx:id="txtOrt" promptText="Wohnort" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                            
+                            <!-- Telefon -->
+                            <Label text="Telefon:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                            <TextField fx:id="txtTelefon" promptText="+41 XX XXX XX XX" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                            
+                            <!-- E-Mail -->
+                            <Label text="E-Mail:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                            <TextField fx:id="txtEmail" promptText="beispiel@email.ch" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+                        </GridPane>
+                        
+                        <!-- Versicherungsdaten -->
+                        <Label text="Versicherungsdaten" styleClass="subsection-label">
+                            <font>
+                                <Font name="System Bold" size="14.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets top="15"/>
+                            </VBox.margin>
+                        </Label>
+                        
+                        <Separator/>
+                        
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="NEVER" minWidth="120.0" prefWidth="120.0"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            
+                            <!-- Versicherungsnummer -->
+                            <Label text="Vers.-Nummer: *" GridPane.columnIndex="0" GridPane.rowIndex="0" 
+                                  styleClass="label-required"/>
+                            <TextField fx:id="txtVersicherungsnummer" 
+                                      promptText="Versicherungsnummer" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                            
+                            <!-- Krankenkasse -->
+                            <Label text="Krankenkasse: *" GridPane.columnIndex="0" GridPane.rowIndex="1" 
+                                  styleClass="label-required"/>
+                            <TextField fx:id="txtKrankenkasse" promptText="Name der Krankenkasse" 
+                                      GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        </GridPane>
+                        
+                        <!-- Hinweis Pflichtfelder -->
+                        <Label text="* Pflichtfelder" styleClass="hint-label">
+                            <VBox.margin>
+                                <Insets top="10"/>
+                            </VBox.margin>
+                        </Label>
+                        
+                    </VBox>
+                </ScrollPane>
+                
+                <!-- Buttons -->
+                <HBox spacing="10" alignment="CENTER">
+                    <padding>
+                        <Insets top="10"/>
+                    </padding>
+                    
+                    <Button fx:id="btnNeu" text="Neu" onAction="#handleNeuClick" 
+                           styleClass="button-success" prefWidth="100.0"/>
+                    <Button fx:id="btnSpeichern" text="Speichern" onAction="#handleSpeichernClick" 
+                           styleClass="button-primary" prefWidth="100.0"/>
+                    <Button fx:id="btnLoeschen" text="Löschen" onAction="#handleLoeschenClick" 
+                           styleClass="button-danger" prefWidth="100.0"/>
+                    <Button fx:id="btnAbbrechen" text="Abbrechen" onAction="#handleAbbrechenClick" 
+                           styleClass="button-secondary" prefWidth="100.0"/>
+                </HBox>
+            </VBox>
+        </SplitPane>
+    </center>
+    
+    <!-- BOTTOM: Statusleiste -->
+    <bottom>
+        <HBox styleClass="status-bar" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="10" right="20" bottom="10" left="20"/>
+            </padding>
+            <Label fx:id="lblStatus" text="Bereit." styleClass="status-label"/>
+        </HBox>
+    </bottom>
+    
+</BorderPane>
